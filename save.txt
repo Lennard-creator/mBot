@@ -1,0 +1,79 @@
+//--------agreements----------
+/*
+engine speed in 1/s
+wheel diameter in mm
+delta in mm
+*/
+//--------notes-----------
+/*
+-mat_vec_multipli weiter
+-rotation function
+-move
+*/
+#include <math.h>
+
+
+//---------------------------------mat functins---------------------------------
+float deg_to_rad(float deg){
+  return deg*(PI/180)
+}
+float rad_to_deg(float rad){
+  return rad*(180/PI)
+}
+
+float[] mat_vec_multiplay(float[] mat, float[] vec){ // only for 2x2 -- enough for purpouse
+  return [mat[0][0]*vec[0]+mat[0][1]*[1], mat[1][0]*vec[0]+mat[1][1]*[1]]
+}
+
+//---------------------------------bot/movement functions---------------------------------
+
+float[] changeDirection(float[] direction ,float phi){
+  float rot_mat[[]] = [[cos(phi), -sin(phi)],[sin(phi), cos(phi)]];
+  return mat_vec_multiply(rot_mat, direction)
+}
+
+ void move(int[] pins, float[] &coord,float[] &direction, float delta, float engine_speed, float wheel_diameter){ //[FL, FR, BL, BR]
+  if(delta<0){ //backward
+    direction = changeDirection(direction, deg_to_rad(180))
+  }
+  coord[0] = delta*cos(direction[0]);
+  coord[1] = delta*sin(direction[1]);
+  time = delta/(2*PI*engine_speed*(wheel_diameter/2)) // t=s/v = s/2*pi*n*r
+
+  for(int i=1;i<sizeof(pins)/sizeof(*pins);i++){ //turn engines on
+    digitalWrite(pins[i], 1);
+  }
+  delay(time) //move for x time
+
+  for(int i=1;i<sizeof(pins)/sizeof(*pins);i++){ //turn engines off
+    digitalWrite(pins[i], 0);
+  } 
+  
+}
+
+
+//---------------------------------bot/sensoric functions---------------------------------
+
+
+void setup() {
+  // put your setup code here, to run once:
+  int i = 0 //--> indicies for direction changes
+  int j = 0 //--> -..-
+  float[] coord = [0,0] //coordinates
+  float[] dir = [1,0] //direction
+  int engineFrontLeft = 0;
+  int engineFrontRight = 0;
+  int engineBackLeft = 0;
+  int engineBackRight =0;
+  int[] pins = [engineFrontLeft, engineFrontRight, engineBackLeft, engineBackRight]
+  pinMode(engineFrontLeft, OUTPUT)
+  pinMode(engineFrontRight, OUTPUT)
+  pinMode(engineBackLeft, OUTPUT)
+  pinMode(engineBackRight, OUTPUT)
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+}
