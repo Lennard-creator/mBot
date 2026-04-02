@@ -165,9 +165,42 @@ void _loop() {
 				}
 				rotate_bot(bot_param, bot_coord, lastDir*phi);
 		}			
-}
 
 void loop() {
   _loop();
 }
 
+
+// add position Funktion
+struct vec2 { float x; float y; };
+
+void addPosition(vector<vec2>& positions, float  x, float y) 
+{
+    positions.push_back({x, y });
+}
+
+// Fläche berechen 
+
+int main()
+{
+	const double PI = 3.141592653589793;
+
+	double Umfang;
+	std::cout << "Umfang eingeben: "; 
+	std::cin >> Umfang;
+
+	// Radius berechnen
+
+	double radius = Umfang / (2 * PI); 
+
+	// Fläche berechnen 
+
+	double Flaeche = PI * radius * radius;
+
+	std::cout << "Radius: " << radius << "cm" << std::endl;
+	std::cout << "Flaeche: " << Flaeche << "cm^2" << std::endl;
+
+	return 0;
+
+
+}
